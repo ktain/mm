@@ -31,6 +31,7 @@ int posPwmW = 0;
 float stopSpeed = 0;
 float searchSpeed = 0.5;	// m/s
 float turnSpeed = 0.2;		// m/s
+float traceSpeed = 1;			// m/s
 
 float maxAccX = 2;	// m/s/s
 float maxDecX = 2;

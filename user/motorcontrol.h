@@ -34,6 +34,7 @@ extern float kdW;
 extern float stopSpeed;
 extern float searchSpeed;
 extern float turnSpeed;
+extern float traceSpeed;
 
 extern float maxAccX;
 extern float maxDecX;
