@@ -1,6 +1,6 @@
 #include "main.h"
 
-bool useMotors = 0;
+bool useMotorControl = 0;
 
 int leftEncCount = 0;
 int rightEncCount = 0;
@@ -27,23 +27,25 @@ float oldErrorW = 0;
 int posPwmX = 0;
 int posPwmW = 0;
 
+/* Speed settings */
+float stopSpeed = 0;
+float searchSpeed = 0.5;	// m/s
+float turnSpeed = 0.2;		// m/s
+
+float maxAccX = 2;	// m/s/s
+float maxDecX = 2;
+float maxAccW = 4000;	// deg/s/s
+float maxDecW = 4000;
+
 /* Constant variables */
 float counts_per_mm = 140;
-float counts_per_deg = 55;	// higher == larger angle
+float counts_per_deg = 54.25;	// higher == larger angle
 int cellDistance = 24576;	// counts
-float stopSpeed = 0;
-float searchSpeed = 0.7;	// m/s
-float turnSpeed = 0.7;		// m/s
 
 float kpX = 2;
 float kdX = 4;
-float kpW = 1;
-float kdW = 5;
-
-float maxAccX = 5;	// m/s/s
-float maxDecX = 5;
-float maxAccW = 4000;	// deg/s/s
-float maxDecW = 4000;
+float kpW = 2;
+float kdW = 20;
 
 void setLeftPwm(int pwm) {
 	if(pwm > MAX_PWM)
@@ -180,17 +182,15 @@ float deg_to_counts(float deg) {
 
 void enableMotorControl(void) {
 	resetMotorParameters();
-	useMotors = 1;
+	useMotorControl = 1;
 }
 
 void disableMotorControl(void) {
-	useMotors = 0;
+	useMotorControl = 0;
 	resetMotorParameters();
 }
 
 void resetMotorParameters(void) {
-	setLeftPwm(0);
-	setRightPwm(0);
 	
 	leftEncCount = 0;
 	rightEncCount = 0;
@@ -216,6 +216,9 @@ void resetMotorParameters(void) {
 	posPwmX = 0;
 	posPwmW = 0;
 	
+	setLeftPwm(0);
+	setRightPwm(0);
+	
 	resetLeftEncCount();
 	resetRightEncCount();
 }
@@ -224,43 +227,48 @@ void resetMotorParameters(void) {
 /**
  *	Straight movement
  */
-void moveForward(float cells) {
+void moveForward(float cells, float maxSpeed, float endSpeed) {
 	if (cells < 0) {
 		cells = 0;
 	}
 	
-	int startEncCount = encCount;
 	distanceLeft = cells*cellDistance;
 	
-	while( encCount - startEncCount < cells*cellDistance ) {
-		if (getDecNeeded(distanceLeft, curSpeedX, 0) < mm_to_counts(maxDecX)) {
-			targetSpeedX = mm_to_counts(searchSpeed);
+	while( distanceLeft > 0 ) {
+		if (getDecNeeded(distanceLeft, curSpeedX, endSpeed) < mm_to_counts(maxDecX)) {
+			targetSpeedX = mm_to_counts(maxSpeed);
 		}
 		else {
-			targetSpeedX = stopSpeed;
+			targetSpeedX = mm_to_counts(endSpeed);
 		}
 	}
-	targetSpeedX = stopSpeed;
+	targetSpeedX = mm_to_counts(endSpeed);
 }
 
 /**
  *	Angular movement
+ *  +speedW turns left, -speedW turns right
+ *	time is in ms, speedX is in m/s, speedW is in deg/s
  */
-void turn(float degrees) {
+void turn(int t1, int t2, int t3, int radius, float speedX, float speedW, float accW, float decW) {
+	int tempAccW = accW;
+	int tempDecW = decW;
+	maxAccW = accW;
+	maxDecW = decW;
 	
-	int t0 = 0;
-	int t1 = 33;
-	int t2 = 659;
-	int t3 = 33;
-	int t4 = 0;
+	moveForward(mm_to_counts((90 - radius)/2)/cellDistance, speedX, speedX);
+	
 	int curt = millis();
-	targetSpeedX = mm_to_counts(0.200);
 	while ( (millis() - curt) <= (t1 + t2 + t3) ) {
 		if ( (millis() - curt) <= (t1 + t2) )
-			targetSpeedW = deg_to_counts(130)/1000;
+			targetSpeedW = deg_to_counts(speedW)/1000;
 		else
 			targetSpeedW = 0;
 	}
-	targetSpeedX = 0;
 	
+	moveForward(mm_to_counts((90 - radius)/2)/cellDistance, speedX, speedX);
+	
+	maxAccW = tempAccW;
+	maxDecW = tempDecW;
 }
+

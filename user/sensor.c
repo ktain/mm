@@ -1,12 +1,13 @@
 #include "main.h"
 
+/* Sensor values updated every ms */
 int voltage = 0;
 int LFSensor = 0;
 int RFSensor = 0;
 int LDSensor = 0;
 int RDSensor = 0;
 int Outz = 0;
-int aSpeed = 0;//angular velocity
+int aSpeed = 0;
 int angle = 0; 
 
 
@@ -26,7 +27,7 @@ void readIRSensors(void)
 	LFSensor = read_LF_Sensor - LFSensor;
 	RFSensor = read_RF_Sensor - RFSensor;
 	FRONT_EM_OFF;
-	if(LFSensor < 0)//error check
+	if(LFSensor < 0) //error check
 		LFSensor = 0;
 	if(RFSensor < 0)
 		RFSensor = 0;
@@ -51,11 +52,12 @@ void readGyro(void)
 	int i;
 	int sampleNum = 20;
 	aSpeed = 0;
-	for(i=0;i<sampleNum;i++)
+	for(i = 0; i < sampleNum; i++)
 		aSpeed += read_Outz;
-    aSpeed *= 50000/sampleNum;
-	aSpeed -= 92980000;
-	aSpeed /= 50000;	
+	
+  aSpeed *= 50000/sampleNum;
+	aSpeed -= 96360000;	// Outz * 50000, if angle goes up, increase
+	aSpeed /= 50000;
 	aSpeed /= 4;
 	angle += aSpeed; 
 }
@@ -64,7 +66,7 @@ void readGyro(void)
 void readVoltage(void) {
 	voltage = read_Voltage;
 	if (voltage < 7000)
-		beep(70, 4000);
+		beep(1000, 4000);
 }
 
 /* 

@@ -4,11 +4,21 @@ void button0(void) {
 	beepn(1);
 	delay_ms(500);
 	
-	//1W == .025rev/s == 9 deg/s
+	initializeMaze();
+	printMaze();
+	
 	enableMotorControl();
-	turn(00);
-	delay_ms(1000);
+	
+	moveForward(0.5, searchSpeed, searchSpeed);
+	curPosY++;
+	moveE();
+	updateDistances((SIZE+1)/2 - 1, (SIZE+1)/2 - 1);
+	
 	disableMotorControl();
+	printMaze();
+	
+	setLeftPwm(0);
+	setRightPwm(0);
 }
 
 
@@ -17,7 +27,8 @@ void button1(void) {
 	delay_ms(500);
 	
 	enableMotorControl();
-	targetSpeedX = mm_to_counts(0.04);
-	delay_ms(2500);
+	randomMovement();
 	disableMotorControl();
+	setLeftPwm(0);
+	setRightPwm(0);
 }

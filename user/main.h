@@ -12,6 +12,9 @@
 #include "encoder.h"
 #include "sensor.h"
 #include "button.h"
+#include "model.h"
+#include "view.h"
+#include "controller.h"
 #include "test.h"
 
 

@@ -1,7 +1,7 @@
 #ifndef PWM_H
 #define PWM_H   
 
-extern bool useMotors;
+extern bool useMotorControl;
 
 extern int encCountLeft;
 extern int encCountRight;
@@ -31,6 +31,10 @@ extern float kdX;
 extern float kpW;
 extern float kdW;
 
+extern float stopSpeed;
+extern float searchSpeed;
+extern float turnSpeed;
+
 extern float maxAccX;
 extern float maxDecX;
 extern float maxAccW;
@@ -45,8 +49,8 @@ void enableMotorControl(void);
 void disableMotorControl(void);
 void resetMotorParameters(void);
 
-void moveForward(float cells);
-void turn(float degrees);
+void moveForward(float cells, float maxSpeed, float endSpeed);
+void turn(int t1, int t2, int t3, int radius, float speedX, float speedW, float accX, float accW);
 
 float counts_to_mm(float counts);
 float mm_to_counts(float speed);

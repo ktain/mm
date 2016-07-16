@@ -487,6 +487,36 @@
               <FileType>5</FileType>
               <FilePath>..\user\test.h</FilePath>
             </File>
+            <File>
+              <FileName>controller.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\user\controller.c</FilePath>
+            </File>
+            <File>
+              <FileName>controller.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\user\controller.h</FilePath>
+            </File>
+            <File>
+              <FileName>model.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\user\model.c</FilePath>
+            </File>
+            <File>
+              <FileName>model.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\user\model.h</FilePath>
+            </File>
+            <File>
+              <FileName>view.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\user\view.c</FilePath>
+            </File>
+            <File>
+              <FileName>view.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\user\view.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
