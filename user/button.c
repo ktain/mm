@@ -9,10 +9,11 @@ void button0(void) {
 	
 	enableMotorControl();
 	
-	moveForward(0.5, searchSpeed, searchSpeed);
-	curPosY++;
-	moveE();
-	updateDistances((SIZE+1)/2 - 1, (SIZE+1)/2 - 1);
+	curPosX = 0;
+	curPosY = 0;
+	orientation = NORTH;
+	floodSearch(7, 7);
+	floodSearch(0, 0);
 	
 	disableMotorControl();
 	printMaze();

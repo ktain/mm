@@ -5,11 +5,11 @@ void SysTick_Handler(void)
 {
 	Millis++;
 	
+	systick();	
+	
+	beepDuration--;
 	if(beepDuration < 0)
 		beep_off;
-	beepDuration--;
-	
-	systick();	
 }
 
 

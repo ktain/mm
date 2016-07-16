@@ -6,6 +6,7 @@ void beep(int duration, int freq);
 void beepn(int count);
 void playVictory(void);
 void playPrelude(void);
+void playLost(void);
 
 extern int beepDuration;
 

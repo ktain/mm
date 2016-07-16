@@ -61,4 +61,8 @@ void playPrelude(void) {
 	}
 }
 
+void playLost(void) {
+	beepn(3);
+}
+
  

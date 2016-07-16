@@ -443,6 +443,11 @@
               <FilePath>..\user\sensor.c</FilePath>
             </File>
             <File>
+              <FileName>stm32f4xx_conf.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\user\stm32f4xx_conf.h</FilePath>
+            </File>
+            <File>
               <FileName>sensor.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\user\sensor.h</FilePath>
@@ -456,11 +461,6 @@
               <FileName>setup.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\user\setup.h</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f4xx_conf.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\user\stm32f4xx_conf.h</FilePath>
             </File>
             <File>
               <FileName>stm32f4xx_it.c</FileName>

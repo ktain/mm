@@ -55,6 +55,9 @@ void printMaze(void) {
       }
       
       // Print markers
+			else if (hasTrace(x, y)) {
+				printf("  . ");
+			}
       else {
         printf("%4d", distance[x][y]);
       }

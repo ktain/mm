@@ -27,14 +27,50 @@ void randomMovement(void) {
 }
 
 void floodSearch(unsigned char targetX, unsigned char targetY) {
+	enableMotorControl();
+	placeTrace(curPosX, curPosY);
 	moveForward(0.5, searchSpeed, searchSpeed);
-	curPosY++;
+	if (orientation == NORTH)
+		curPosY++;
+	else if (orientation == EAST)
+		curPosX++;
+	else if (orientation == SOUTH)
+		curPosY--;
+	else if (orientation == WEST)
+		curPosX--;
 	
-	detectWalls();
-	updateDistances(targetX, targetY);
+	placeTrace(curPosX, curPosY);
 	
-	performNextMove();
+	while( !atTarget(targetX, targetY) ) {
+		detectWalls();
+		updateDistances(targetX, targetY);
+		if (distance[curPosX][curPosY] >= MAX_DIST) {
+			moveForward(0.5, searchSpeed, stopSpeed);
+			delay_ms(100);
+			disableMotorControl();
+			playLost();
+			return;
+		}
+		performNextMove();
+		placeTrace(curPosX, curPosY);
+	}
+	moveForward(0.5, searchSpeed, stopSpeed);
+	if (orientation == NORTH)
+		orientation = SOUTH;
+	else if (orientation == EAST)
+		orientation = WEST;
+	else if (orientation == SOUTH)
+		orientation = NORTH;
+	else if (orientation == WEST)
+		orientation = EAST;
 	
+	delay_ms(100);
+	disableMotorControl();
+	playVictory();
+	enableMotorControl();
+	turnLeft180();
+	delay_ms(100);
+	disableMotorControl();
 }
 
 void performNextMove() {
@@ -92,15 +128,27 @@ void performNextMove() {
 	else if ( orientation == WEST && !hasWestWall(curPosX, curPosY) )
 		nextMove = WEST;
 	
-	// 5. Otherwise prioritize N > E > S > W
+	// 5. Else, prioritize N > E > S > W
 	else if (!hasNorthWall(curPosX, curPosY))
 		nextMove = NORTH;
 	else if (!hasEastWall(curPosX, curPosY))
 		nextMove = EAST;
-		else if (!hasSouthWall(curPosX, curPosY))
+	else if (!hasSouthWall(curPosX, curPosY))
 		nextMove = SOUTH;
 	else if (!hasWestWall(curPosX, curPosY))
 		nextMove = WEST;
+		
+	
+	// Perform next move
+	if (nextMove == NORTH)
+		moveN();
+	else if (nextMove == EAST)
+		moveE();
+	else if (nextMove == SOUTH)
+		moveS();
+	else if (nextMove == WEST)
+		moveW();
+	
 }
 
 void updateDistances(unsigned char targetX, unsigned char targetY) {
