@@ -18,6 +18,7 @@ void faceN(void);
 void faceE(void);
 void faceS(void);
 void faceW(void);
+bool approachingWall(void);
 
 extern int leftWallThreshold;
 extern int rightWallThreshold;

@@ -45,7 +45,7 @@ extern float maxDecW;
 
 
 void updateSpeed(void);
-float getDecNeeded(int d, float Vf, float Vi);
+float getDecNeeded(int d, float Vi, float Vf);
 void setLeftPwm(int pwm);
 void setRightPwm(int pwm);
 void enableMotorControl(void);

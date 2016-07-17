@@ -6,13 +6,13 @@ int frontWallThreshold = 20;
 
 
 void curveLeft90(void) {
-	turn(30, 120, 30, 40, 0.6, 570, 20000, 20000);
+	turn(23, 170, 23, 80, 0.6, 450, 20000, 20000);
 	//turn(35, 222, 35, 70, 0.4, 350, 10000, 10000);
 	//turn(43, 487, 43, 60, 0.2, 170, 4000, 4000);
 }
 
 void curveRight90(void){
-	turn(30, 120, 30, 40, 0.6, -570, 20000, 20000);
+	turn(23, 170, 23, 80, 0.6, -450, 20000, 20000);
 	//turn(35, 222, 35, 70, 0.4, -350, 10000, 10000);
 	//turn(43, 485, 43, 60, 0.2, -170, 4000, 4000);
 }
@@ -34,8 +34,11 @@ void pivotRight180(void) {
 }
 
 void moveN(void) {
-	if (orientation == NORTH)
+	if (orientation == NORTH) {
+		if (approachingWall())
+			moveForward(1, searchSpeed, turnSpeed);
 		moveForward(1, searchSpeed, searchSpeed);
+	}
 	else if (orientation == EAST)
 		curveLeft90();
 	else if (orientation == SOUTH)
@@ -48,8 +51,12 @@ void moveN(void) {
 }
 
 void moveE(void) {
-	if (orientation == EAST)
-		moveForward(1, searchSpeed, searchSpeed);
+	if (orientation == EAST) {
+		if (approachingWall())
+			moveForward(1, searchSpeed, turnSpeed);
+		else
+			moveForward(1, searchSpeed, searchSpeed);
+	}
 	else if (orientation == SOUTH)
 		curveLeft90();
 	else if (orientation == WEST)
@@ -62,8 +69,12 @@ void moveE(void) {
 }
 
 void moveS(void) {
-	if (orientation == SOUTH)
-		moveForward(1, searchSpeed, searchSpeed);
+	if (orientation == SOUTH) {
+		if (approachingWall())
+			moveForward(1, searchSpeed, turnSpeed);
+		else 
+			moveForward(1, searchSpeed, searchSpeed);
+	}
 	else if (orientation == WEST)
 		curveLeft90();
 	else if (orientation == NORTH)
@@ -76,8 +87,12 @@ void moveS(void) {
 }
 
 void moveW(void) {	
-	if (orientation == WEST)
-		moveForward(1, searchSpeed, searchSpeed);
+	if (orientation == WEST) {
+		if (approachingWall())
+			moveForward(1, searchSpeed, turnSpeed);
+		else
+			moveForward(1, searchSpeed, searchSpeed);
+	}
 	else if (orientation == NORTH)
 		curveLeft90();
 	else if (orientation == EAST)
@@ -174,3 +189,10 @@ void faceW(void) {
 	
 }
 
+// Detect front wall
+bool approachingWall (void) {
+	if ( (LFSensor > 20) && (RFSensor > 20) )
+		return 1;
+	else
+		return 0;
+}

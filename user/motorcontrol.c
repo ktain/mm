@@ -29,11 +29,11 @@ int posPwmX = 0;
 int posPwmW = 0;
 
 /* Speed settings */
-int maxPwm = 900;
+int maxPwm = 999;
 float stopSpeed = 0;
 float searchSpeed = 0.7;	// m/s
 float turnSpeed = 0.2;		// m/s
-float traceSpeed = 0.9;			// m/s
+float traceSpeed = 0.7;			// m/s
 
 float maxAccX = 3;	// m/s/s
 float maxDecX = 3;
@@ -162,9 +162,9 @@ void updateSpeed(void) {
 }
 
 
-// Get deceleration needed given distance left to travel, final speed, and current speed
-float getDecNeeded(int d, float Vf, float Vi) {
-	int decNeeded;
+// Get deceleration needed given distance left to travel, current speed, and final speed
+float getDecNeeded(int d, float Vi, float Vf) {
+	float decNeeded;
 	if (d <= 0) {
 		d = 1;
 	}
@@ -247,7 +247,7 @@ void moveForward(float cells, float maxSpeed, float endSpeed) {
 	while( distanceLeft > 0 ) {
 		if (distanceLeft < cellDistance/2 && endSpeed == stopSpeed)
 			useIRSensors = 0;
-		if (getDecNeeded(distanceLeft, curSpeedX, endSpeed) < mm_to_counts(maxDecX)) {
+		if (getDecNeeded(distanceLeft, curSpeedX, mm_to_counts(endSpeed)) < mm_to_counts(maxDecX)/1000) {
 			targetSpeedX = mm_to_counts(maxSpeed);
 		}
 		else {

@@ -167,7 +167,7 @@ void simulateStraight(unsigned char targetX, unsigned char targetY) {
 	}
 	
 	else if (orientation == SOUTH) {
-		while (!hasSouthWall(xPos, yPos) && hasTrace(xPos, yPos-1) && (distance[xPos][yPos-1] == distance[xPos][yPos-1] - 1)
+		while (!hasSouthWall(xPos, yPos) && hasTrace(xPos, yPos-1) && (distance[xPos][yPos-1] == distance[xPos][yPos] - 1)
 			 && !(xPos == targetX && yPos == targetY) ) {
 			count++;
 			yPos--;
