@@ -3,10 +3,11 @@
 /* Sensor constants */
 int LDMidVal = 230; // 60-1800
 int RDMidVal = 230;	// 80-1600
-int LFMidVal = 670;
-int RFMidVal = 690;
-int alignTime = 500;
-int alignScale = 40;
+int LFMidVal = 650;
+int RFMidVal = 835;
+int alignTime = 200;
+int alignPwm = 200;
+float alignScale = 1.5;
 
 /* Sensor values updated every ms */
 int voltage = 0;

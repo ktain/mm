@@ -1,16 +1,20 @@
 #include "main.h"
 
-int leftWallThreshold = 100;	// when mouse is at half a cell distance
-int rightWallThreshold = 100;
-int frontWallThreshold = 30;
+int leftWallThreshold = 110;	// when mouse is at half a cell distance
+int rightWallThreshold = 110;
+int frontWallThreshold = 20;
 
 
 void curveLeft90(void) {
-	turn(43, 487, 43, 60, 0.2, 170, 4000, 4000);
+	turn(30, 120, 30, 40, 0.6, 570, 20000, 20000);
+	//turn(35, 222, 35, 70, 0.4, 350, 10000, 10000);
+	//turn(43, 487, 43, 60, 0.2, 170, 4000, 4000);
 }
 
 void curveRight90(void){
-	turn(43, 485, 43, 60, 0.2, -170, 4000, 4000);
+	turn(30, 120, 30, 40, 0.6, -570, 20000, 20000);
+	//turn(35, 222, 35, 70, 0.4, -350, 10000, 10000);
+	//turn(43, 485, 43, 60, 0.2, -170, 4000, 4000);
 }
 
 void pivotLeft90(void) {
@@ -86,7 +90,7 @@ void moveW(void) {
 }
 
 void moveBack(void) {
-	bool hasFrontWall = (LFSensor > frontWallThreshold && RFSensor > frontWallThreshold)? 1: 0;
+	bool hasFrontWall = (LFSensor > frontWallThreshold || RFSensor > frontWallThreshold)? 1: 0;
 	bool hasLeftWall = (LDSensor > leftWallThreshold)? 1: 0;
 	bool hasRightWall = (RDSensor > rightWallThreshold)? 1: 0;
 	

@@ -31,12 +31,12 @@ int posPwmW = 0;
 /* Speed settings */
 int maxPwm = 900;
 float stopSpeed = 0;
-float searchSpeed = 0.3;	// m/s
+float searchSpeed = 0.7;	// m/s
 float turnSpeed = 0.2;		// m/s
-float traceSpeed = 0.5;			// m/s
+float traceSpeed = 0.9;			// m/s
 
-float maxAccX = 2;	// m/s/s
-float maxDecX = 2;
+float maxAccX = 3;	// m/s/s
+float maxDecX = 3;
 float maxAccW = 4000;	// deg/s/s
 float maxDecW = 4000;
 
@@ -44,12 +44,12 @@ float maxDecW = 4000;
 float counts_per_mm = 141.1;
 float counts_per_deg = 54.45;	// higher == larger angle
 int cellDistance = 25400;	// counts
-int sensorScale = 40;	// sensor error divisor
+int sensorScale = 50;	// sensor error divisor
 
 // Motor encoder PID
 float kpX = 2;
 float kdX = 4;
-float kpW = 1;
+float kpW = 2;
 float kdW = 12;
 
 
@@ -136,15 +136,18 @@ void updateSpeed(void) {
 	/* PD control */
 	float encFeedbackX;
 	float encFeedbackW;
+	float rotationalFeedback;
 	
 	encFeedbackX = (rightEncChange + leftEncChange)/2;
 	encFeedbackW = (rightEncChange - leftEncChange)/2;
 	
-	errorX += curSpeedX - encFeedbackX;
-	errorW += curSpeedW - encFeedbackW;
+	rotationalFeedback = encFeedbackW;
 	
 	if (useIRSensors)
-		errorW += getSensorError()/sensorScale;
+		rotationalFeedback -= getSensorError()/sensorScale;
+	
+	errorX += curSpeedX - encFeedbackX;
+	errorW += curSpeedW - rotationalFeedback;
 	
 	posPwmX = (kpX * errorX + kdX * (errorX - oldErrorX));
 	posPwmW = (kpW * errorW + kdW * (errorW - oldErrorW));
@@ -152,9 +155,10 @@ void updateSpeed(void) {
 	oldErrorX = errorX;
 	oldErrorW = errorW;
 	
+
+	
 	setLeftPwm(posPwmX - posPwmW);
 	setRightPwm(posPwmX + posPwmW);
-	
 }
 
 
@@ -282,13 +286,15 @@ void turn(int t1, int t2, int t3, int radius, float speedX, float speedW, float 
 }
 
 void align(int duration){
+	int tempPwm = maxPwm;
+	maxPwm = alignPwm;
+	disableMotorControl();
 	int curt = millis();
-	while (millis() - curt < duration/2) {
-		errorX += (LFMidVal - LFSensor)/alignScale;
-		delay_ms(1);
-	}
 	while (millis() - curt < duration) {
-		errorW += ((LFSensor - RFSensor)+(RFMidVal - LFMidVal))/alignScale;
-		delay_ms(1);
+		setLeftPwm((LFMidVal - LFSensor)/alignScale);
+		setRightPwm((RFMidVal - RFSensor)/alignScale);
 	}
+	maxPwm = tempPwm;
+	enableMotorControl();
 }
+

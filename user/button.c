@@ -26,7 +26,7 @@ void button1(void) {
 	beepn(1);
 	delay_ms(500);
 	enableMotorControl();
-	align(1000);
+	curveRight90();
 	disableMotorControl();
 	setLeftPwm(0);
 	setRightPwm(0);
