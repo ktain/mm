@@ -54,7 +54,7 @@ void resetMotorParameters(void);
 
 void moveForward(float cells, float maxSpeed, float endSpeed);
 void turn(int t1, int t2, int t3, int radius, float speedX, float speedW, float accX, float accW);
-void align(int LFVal, int RFVal, int duration);
+void align(int duration);
 
 float counts_to_mm(float counts);
 float mm_to_counts(float speed);

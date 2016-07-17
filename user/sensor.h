@@ -15,7 +15,7 @@ extern int RDMidVal;
 extern int LFMidVal;
 extern int RFMidVal;
 extern int alignTime;
-extern int alignPwm;
+extern int alignScale;
 
 void readVoltage(void);
 void readIRSensors(void);

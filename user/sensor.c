@@ -5,8 +5,8 @@ int LDMidVal = 230; // 60-1800
 int RDMidVal = 230;	// 80-1600
 int LFMidVal = 670;
 int RFMidVal = 690;
-int alignTime = 1000;
-int alignPwm = 200;
+int alignTime = 500;
+int alignScale = 40;
 
 /* Sensor values updated every ms */
 int voltage = 0;

@@ -6,19 +6,19 @@ int frontWallThreshold = 30;
 
 
 void curveLeft90(void) {
-	turn(43, 487, 43, 70, 0.2, 170, 4000, 4000);
+	turn(43, 487, 43, 60, 0.2, 170, 4000, 4000);
 }
 
 void curveRight90(void){
-	turn(43, 485, 43, 70, 0.2, -170, 4000, 4000);
+	turn(43, 485, 43, 60, 0.2, -170, 4000, 4000);
 }
 
 void pivotLeft90(void) {
-	turn(43, 487, 43, 70, 0, 170, 4000, 4000);
+	turn(43, 487, 43, 90, 0, 170, 4000, 4000);
 }
 
 void pivotRight90(void) {
-	turn(43, 485, 43, 70, 0, -170, 4000, 4000);
+	turn(43, 485, 43, 90, 0, -170, 4000, 4000);
 }
 
 void pivotLeft180(void) {
@@ -92,17 +92,17 @@ void moveBack(void) {
 	
 	moveForward(0.5, searchSpeed, stopSpeed);
 	if (hasFrontWall) {
-		align(LFMidVal, RFMidVal, alignTime);
+		align(alignTime);
 	}
 	if (hasLeftWall) {
 		pivotLeft90();
-		align(LFMidVal, RFMidVal, alignTime);
+		align(alignTime);
 		pivotLeft90();
 	}
 	else if (hasRightWall) {
 		pivotRight90();
-		align(LFMidVal, RFMidVal, alignTime);
-		curveRight90();
+		align(alignTime);
+		pivotRight90();
 	}
 	else {
 		pivotLeft180();

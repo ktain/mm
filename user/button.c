@@ -25,7 +25,9 @@ void button0(void) {
 void button1(void) {
 	beepn(1);
 	delay_ms(500);
-	align(670, 690, 1000);
+	enableMotorControl();
+	align(1000);
+	disableMotorControl();
 	setLeftPwm(0);
 	setRightPwm(0);
 }

@@ -33,7 +33,7 @@ int maxPwm = 900;
 float stopSpeed = 0;
 float searchSpeed = 0.3;	// m/s
 float turnSpeed = 0.2;		// m/s
-float traceSpeed = 0.4;			// m/s
+float traceSpeed = 0.5;			// m/s
 
 float maxAccX = 2;	// m/s/s
 float maxDecX = 2;
@@ -44,7 +44,7 @@ float maxDecW = 4000;
 float counts_per_mm = 141.1;
 float counts_per_deg = 54.45;	// higher == larger angle
 int cellDistance = 25400;	// counts
-int sensorScale = 20;	// sensor error divisor
+int sensorScale = 40;	// sensor error divisor
 
 // Motor encoder PID
 float kpX = 2;
@@ -265,7 +265,6 @@ void turn(int t1, int t2, int t3, int radius, float speedX, float speedW, float 
 	maxAccW = accW;
 	maxDecW = decW;
 	
-	useIRSensors = 0;
 	moveForward(mm_to_counts(90 - radius)/2/cellDistance, speedX, speedX);
 	
 	int curt = millis();
@@ -282,15 +281,14 @@ void turn(int t1, int t2, int t3, int radius, float speedX, float speedW, float 
 	maxDecW = tempDecW;
 }
 
-void align(int LFVal, int RFVal, int duration){
-	disableMotorControl();
-	int tempPwm = maxPwm;
-	maxPwm = alignPwm;
+void align(int duration){
 	int curt = millis();
-	while (millis() - curt < duration) {
-		setLeftPwm(LFVal - LFSensor);
-		setRightPwm(RFVal - RFSensor);
+	while (millis() - curt < duration/2) {
+		errorX += (LFMidVal - LFSensor)/alignScale;
+		delay_ms(1);
 	}
-	maxPwm = tempPwm;
-	enableMotorControl();
+	while (millis() - curt < duration) {
+		errorW += ((LFSensor - RFSensor)+(RFMidVal - LFMidVal))/alignScale;
+		delay_ms(1);
+	}
 }
