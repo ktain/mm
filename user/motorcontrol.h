@@ -2,6 +2,7 @@
 #define PWM_H   
 
 extern bool useMotorControl;
+extern bool useIRSensors;
 
 extern int encCountLeft;
 extern int encCountRight;
@@ -17,6 +18,7 @@ extern int distanceLeft;
 extern float targetSpeedX; // speed in counts/ms
 extern float targetSpeedW;
 
+extern int maxPwm;
 extern float curSpeedX;			
 extern float curSpeedW;
 extern float encFeedbackX;
@@ -52,13 +54,13 @@ void resetMotorParameters(void);
 
 void moveForward(float cells, float maxSpeed, float endSpeed);
 void turn(int t1, int t2, int t3, int radius, float speedX, float speedW, float accX, float accW);
+void align(int LFVal, int RFVal, int duration);
 
 float counts_to_mm(float counts);
 float mm_to_counts(float speed);
 float counts_to_deg(float counts);
 float deg_to_counts(float deg);
 
-#define MAX_PWM 900
 #define LPWMA TIM4->CCR1
 #define LPWMB TIM4->CCR2
 #define RPWMA TIM4->CCR3

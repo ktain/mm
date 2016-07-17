@@ -14,9 +14,9 @@ void randomMovement(void) {
 	
 	while(1) {
 		if (LDSensor < leftWallThreshold)	// no left wall
-			turnLeft90();
+			curveLeft90();
 		else if (RDSensor < rightWallThreshold) // no right wall
-			turnRight90();
+			curveRight90();
 		else if (LFSensor < frontWallThreshold || RFSensor < frontWallThreshold) // no front wall
 			moveForward(1, searchSpeed, turnSpeed);
 		else {	// deadend

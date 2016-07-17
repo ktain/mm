@@ -1,5 +1,13 @@
 #include "main.h"
 
+/* Sensor constants */
+int LDMidVal = 230; // 60-1800
+int RDMidVal = 230;	// 80-1600
+int LFMidVal = 670;
+int RFMidVal = 690;
+int alignTime = 1000;
+int alignPwm = 200;
+
 /* Sensor values updated every ms */
 int voltage = 0;
 int LFSensor = 0;
@@ -44,6 +52,18 @@ void readIRSensors(void)
 	if(RDSensor < 0)
 		RDSensor = 0;
 	delay_us(20);
+}
+
+// Returns sensor error 
+int getSensorError(void) {
+	int sensorError = 0;
+
+	if (LDSensor > LDMidVal)
+		sensorError = LDMidVal - LDSensor;
+	else if (RDSensor > RDMidVal)
+		sensorError = RDSensor - RDMidVal;
+	
+	return sensorError;
 }
 
 /* Read gyro */

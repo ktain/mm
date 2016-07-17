@@ -478,11 +478,6 @@
               <FilePath>..\user\usart.c</FilePath>
             </File>
             <File>
-              <FileName>test.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\user\test.c</FilePath>
-            </File>
-            <File>
               <FileName>test.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\user\test.h</FilePath>
@@ -491,6 +486,11 @@
               <FileName>controller.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\user\controller.c</FilePath>
+            </File>
+            <File>
+              <FileName>test.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\user\test.c</FilePath>
             </File>
             <File>
               <FileName>controller.h</FileName>
@@ -516,6 +516,16 @@
               <FileName>view.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\user\view.h</FilePath>
+            </File>
+            <File>
+              <FileName>search.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\user\search.h</FilePath>
+            </File>
+            <File>
+              <FileName>search.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\user\search.c</FilePath>
             </File>
           </Files>
         </Group>

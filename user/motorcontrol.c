@@ -1,6 +1,7 @@
 #include "main.h"
 
 bool useMotorControl = 0;
+bool useIRSensors = 0;
 
 int leftEncCount = 0;
 int rightEncCount = 0;
@@ -28,10 +29,11 @@ int posPwmX = 0;
 int posPwmW = 0;
 
 /* Speed settings */
+int maxPwm = 900;
 float stopSpeed = 0;
-float searchSpeed = 0.5;	// m/s
+float searchSpeed = 0.3;	// m/s
 float turnSpeed = 0.2;		// m/s
-float traceSpeed = 1;			// m/s
+float traceSpeed = 0.4;			// m/s
 
 float maxAccX = 2;	// m/s/s
 float maxDecX = 2;
@@ -39,20 +41,23 @@ float maxAccW = 4000;	// deg/s/s
 float maxDecW = 4000;
 
 /* Constant variables */
-float counts_per_mm = 140;
-float counts_per_deg = 54.25;	// higher == larger angle
-int cellDistance = 24576;	// counts
+float counts_per_mm = 141.1;
+float counts_per_deg = 54.45;	// higher == larger angle
+int cellDistance = 25400;	// counts
+int sensorScale = 20;	// sensor error divisor
 
+// Motor encoder PID
 float kpX = 2;
 float kdX = 4;
-float kpW = 2;
-float kdW = 20;
+float kpW = 1;
+float kdW = 12;
+
 
 void setLeftPwm(int pwm) {
-	if(pwm > MAX_PWM)
-		pwm = MAX_PWM;
-	if(pwm < -MAX_PWM)
-		pwm = -MAX_PWM;
+	if(pwm > maxPwm)
+		pwm = maxPwm;
+	if(pwm < -maxPwm)
+		pwm = -maxPwm;
 	
 	
 	if(pwm >= 0) {
@@ -66,10 +71,10 @@ void setLeftPwm(int pwm) {
 }
 
 void setRightPwm(int pwm) {
-	if(pwm > MAX_PWM)
-		pwm = MAX_PWM;
-	if(pwm < -MAX_PWM)
-		pwm = -MAX_PWM;	
+	if(pwm > maxPwm)
+		pwm = maxPwm;
+	if(pwm < -maxPwm)
+		pwm = -maxPwm;	
 	
 	//swap direction
 	pwm = -pwm;
@@ -137,6 +142,9 @@ void updateSpeed(void) {
 	
 	errorX += curSpeedX - encFeedbackX;
 	errorW += curSpeedW - encFeedbackW;
+	
+	if (useIRSensors)
+		errorW += getSensorError()/sensorScale;
 	
 	posPwmX = (kpX * errorX + kdX * (errorX - oldErrorX));
 	posPwmW = (kpW * errorW + kdW * (errorW - oldErrorW));
@@ -229,13 +237,12 @@ void resetMotorParameters(void) {
  *	Straight movement
  */
 void moveForward(float cells, float maxSpeed, float endSpeed) {
-	if (cells < 0) {
-		cells = 0;
-	}
 	
 	distanceLeft = cells*cellDistance;
-	
+	useIRSensors = 1;
 	while( distanceLeft > 0 ) {
+		if (distanceLeft < cellDistance/2 && endSpeed == stopSpeed)
+			useIRSensors = 0;
 		if (getDecNeeded(distanceLeft, curSpeedX, endSpeed) < mm_to_counts(maxDecX)) {
 			targetSpeedX = mm_to_counts(maxSpeed);
 		}
@@ -244,6 +251,7 @@ void moveForward(float cells, float maxSpeed, float endSpeed) {
 		}
 	}
 	targetSpeedX = mm_to_counts(endSpeed);
+	useIRSensors = 0;
 }
 
 /**
@@ -257,7 +265,8 @@ void turn(int t1, int t2, int t3, int radius, float speedX, float speedW, float 
 	maxAccW = accW;
 	maxDecW = decW;
 	
-	moveForward(mm_to_counts((90 - radius)/2)/cellDistance, speedX, speedX);
+	useIRSensors = 0;
+	moveForward(mm_to_counts(90 - radius)/2/cellDistance, speedX, speedX);
 	
 	int curt = millis();
 	while ( (millis() - curt) <= (t1 + t2 + t3) ) {
@@ -267,9 +276,21 @@ void turn(int t1, int t2, int t3, int radius, float speedX, float speedW, float 
 			targetSpeedW = 0;
 	}
 	
-	moveForward(mm_to_counts((90 - radius)/2)/cellDistance, speedX, speedX);
+	moveForward(mm_to_counts(90 - radius)/2/cellDistance, speedX, speedX);
 	
 	maxAccW = tempAccW;
 	maxDecW = tempDecW;
 }
 
+void align(int LFVal, int RFVal, int duration){
+	disableMotorControl();
+	int tempPwm = maxPwm;
+	maxPwm = alignPwm;
+	int curt = millis();
+	while (millis() - curt < duration) {
+		setLeftPwm(LFVal - LFSensor);
+		setRightPwm(RFVal - RFSensor);
+	}
+	maxPwm = tempPwm;
+	enableMotorControl();
+}

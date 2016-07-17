@@ -12,8 +12,7 @@ void button0(void) {
 	curPosX = 0;
 	curPosY = 0;
 	orientation = NORTH;
-	floodSearch(7, 7);
-	floodSearch(0, 0);
+	floodSearch(5, 5);
 	
 	disableMotorControl();
 	printMaze();
@@ -26,10 +25,7 @@ void button0(void) {
 void button1(void) {
 	beepn(1);
 	delay_ms(500);
-	
-	enableMotorControl();
-	randomMovement();
-	disableMotorControl();
+	align(670, 690, 1000);
 	setLeftPwm(0);
 	setRightPwm(0);
 }

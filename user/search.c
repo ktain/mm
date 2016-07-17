@@ -4,6 +4,7 @@
 void floodSearch(unsigned char targetX, unsigned char targetY) {
 	enableMotorControl();
 	placeTrace(curPosX, curPosY);
+		
 	moveForward(0.5, searchSpeed, searchSpeed);
 	if (orientation == NORTH)
 		curPosY++;
@@ -19,6 +20,8 @@ void floodSearch(unsigned char targetX, unsigned char targetY) {
 	while( !atTarget(targetX, targetY) ) {
 		detectWalls();
 		updateDistances(targetX, targetY);
+		
+		//Error check
 		if (distance[curPosX][curPosY] >= MAX_DIST) {
 			moveForward(0.5, searchSpeed, stopSpeed);
 			delay_ms(100);
@@ -26,6 +29,7 @@ void floodSearch(unsigned char targetX, unsigned char targetY) {
 			playLost();
 			return;
 		}
+		
 		performNextMove();
 		placeTrace(curPosX, curPosY);
 		simulateStraight(targetX, targetY);
@@ -44,7 +48,7 @@ void floodSearch(unsigned char targetX, unsigned char targetY) {
 	disableMotorControl();
 	playVictory();
 	enableMotorControl();
-	turnLeft180();
+	pivotLeft180();
 	delay_ms(100);
 	disableMotorControl();
 }
