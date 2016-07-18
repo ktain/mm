@@ -1,8 +1,10 @@
 #include "main.h"
 
-int leftWallThreshold = 110;	// when mouse is at half a cell distance
-int rightWallThreshold = 110;
-int frontWallThreshold = 20;
+int leftWallThreshold = 200;	// when mouse is at half a cell distance
+int rightWallThreshold = 200;
+int frontWallThreshold = 50;
+
+int approachThreshold = 50;
 
 
 void curveLeft90(void) {
@@ -159,39 +161,63 @@ void detectWalls() {
 		else if (orientation == WEST)
 			placeWall(curPosX, curPosY, NORTH);
 	}
-
 }
 
 
 // Pivot the mouse north
 void faceN(void) {
+	if (orientation == EAST)
+		pivotLeft90();
+	else if (orientation == SOUTH)
+		pivotLeft180();
+	else if (orientation == WEST)
+		pivotRight90();
 	
-	
+	orientation = NORTH;
 }
 
 
 // Pivot the mouse east
 void faceE(void) {
+	if (orientation == NORTH)
+		pivotRight90();
+	else if (orientation == SOUTH)
+		pivotLeft90();
+	else if (orientation == WEST)
+		pivotLeft180();
 	
-	
+	orientation = EAST;
 }
 
 
 // Pivot the mouse south
 void faceS(void) {
+	if (orientation == NORTH)
+		pivotLeft180();
+	else if (orientation == EAST)
+		pivotRight90();
+	else if (orientation == WEST)
+		pivotLeft90();
 	
+	orientation = SOUTH;
 }
 
 
 // Pivot the mouse west
 void faceW(void) {
+	if (orientation == NORTH)
+		pivotLeft90();
+	else if (orientation == EAST)
+		pivotLeft180();
+	else if (orientation == SOUTH)
+		pivotRight90();
 	
-	
+	orientation = WEST;
 }
 
 // Detect front wall
 bool approachingWall (void) {
-	if ( (LFSensor > 20) && (RFSensor > 20) )
+	if ( (LFSensor > approachThreshold) && (RFSensor > approachThreshold) )
 		return 1;
 	else
 		return 0;

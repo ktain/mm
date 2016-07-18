@@ -448,6 +448,11 @@
               <FilePath>..\user\stm32f4xx_conf.h</FilePath>
             </File>
             <File>
+              <FileName>view.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\user\view.c</FilePath>
+            </File>
+            <File>
               <FileName>sensor.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\user\sensor.h</FilePath>
@@ -508,11 +513,6 @@
               <FilePath>..\user\model.h</FilePath>
             </File>
             <File>
-              <FileName>view.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\user\view.c</FilePath>
-            </File>
-            <File>
               <FileName>view.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\user\view.h</FilePath>
@@ -526,6 +526,16 @@
               <FileName>search.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\user\search.c</FilePath>
+            </File>
+            <File>
+              <FileName>speedrun.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\user\speedrun.c</FilePath>
+            </File>
+            <File>
+              <FileName>speedrun.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\user\speedrun.h</FilePath>
             </File>
           </Files>
         </Group>

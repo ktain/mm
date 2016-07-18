@@ -18,7 +18,6 @@ extern int distanceLeft;
 extern float targetSpeedX; // speed in counts/ms
 extern float targetSpeedW;
 
-extern int maxPwm;
 extern float curSpeedX;			
 extern float curSpeedW;
 extern float encFeedbackX;
@@ -33,10 +32,12 @@ extern float kdX;
 extern float kpW;
 extern float kdW;
 
+extern int maxPwm;
 extern float stopSpeed;
 extern float searchSpeed;
 extern float turnSpeed;
 extern float traceSpeed;
+extern float runSpeed;
 
 extern float maxAccX;
 extern float maxDecX;

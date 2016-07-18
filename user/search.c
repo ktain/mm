@@ -3,6 +3,7 @@
 // Flood search to target position
 void floodSearch(unsigned char targetX, unsigned char targetY) {
 	enableMotorControl();
+	updateDistances(targetX, targetY); // initial update ~64ms
 	placeTrace(curPosX, curPosY);
 		
 	moveForward(0.5, searchSpeed, searchSpeed);
@@ -132,15 +133,22 @@ void performNextMove() {
 }
 
 void updateDistances(unsigned char targetX, unsigned char targetY) {
+	bool changed = 0;
+	int tempDistance;
 	distance[targetX][targetY] = 0;
 	for (int i = 0; i < SIZE*SIZE; i++) {
 		for (int x = 0; x < SIZE; x++) {
 			for (int y = 0; y < SIZE; y++) {
 				if ( !((x == targetX) && (y == targetY)) ){
+					tempDistance = distance[x][y];
 					distance[x][y] = getMinDistance(x, y) + 1;
+					if (distance[x][y] != tempDistance)
+						changed = 1;
 				}
 			}
 		}
+		if (!changed)
+			return;
 	}
 }
 

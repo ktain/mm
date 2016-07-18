@@ -16,6 +16,7 @@
 #include "view.h"
 #include "controller.h"
 #include "search.h"
+#include "speedrun.h"
 #include "test.h"
 
 

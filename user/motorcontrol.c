@@ -31,9 +31,10 @@ int posPwmW = 0;
 /* Speed settings */
 int maxPwm = 999;
 float stopSpeed = 0;
-float searchSpeed = 0.7;	// m/s
-float turnSpeed = 0.2;		// m/s
-float traceSpeed = 0.7;			// m/s
+float searchSpeed = 0.3;	// m/s
+float turnSpeed = 0.2;
+float traceSpeed = 0.7;
+float runSpeed = 0.4;
 
 float maxAccX = 3;	// m/s/s
 float maxDecX = 3;
