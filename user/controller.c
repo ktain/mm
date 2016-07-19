@@ -1,38 +1,36 @@
 #include "main.h"
 
-int leftWallThreshold = 200;	// when mouse is at half a cell distance
-int rightWallThreshold = 200;
-int frontWallThreshold = 50;
+int leftWallThreshold = 180;	// when mouse is at half a cell distance
+int rightWallThreshold = 180;
+int frontWallThreshold = 80;
 
 int approachThreshold = 50;
 
 
 void curveLeft90(void) {
-	turn(23, 170, 23, 80, 0.6, 450, 20000, 20000);
-	//turn(35, 222, 35, 70, 0.4, 350, 10000, 10000);
-	//turn(43, 487, 43, 60, 0.2, 170, 4000, 4000);
+	turn(11, 203, 11, 70, 0.5, 430, 40000, 40000);
+	//turn(9, 256, 9, 53, 0.3, 345, 40000, 40000);
 }
 
-void curveRight90(void){
-	turn(23, 170, 23, 80, 0.6, -450, 20000, 20000);
-	//turn(35, 222, 35, 70, 0.4, -350, 10000, 10000);
-	//turn(43, 485, 43, 60, 0.2, -170, 4000, 4000);
+void curveRight90(void) {
+	turn(11, 203, 11, 70, 0.5, -430, 40000, 40000);
+	//turn(9, 250, 9, 54, 0.3, -350, 40000, 40000);
 }
 
 void pivotLeft90(void) {
-	turn(43, 487, 43, 90, 0, 170, 4000, 4000);
+	turn(9, 248, 9, 90, 0, -350, 40000, 40000);
 }
 
 void pivotRight90(void) {
-	turn(43, 485, 43, 90, 0, -170, 4000, 4000);
+	turn(9, 248, 9, 90, 0, -350, 40000, 40000);
 }
 
 void pivotLeft180(void) {
-	turn(33, 1352, 33, 90, 0, 130, 4000, 4000);
+	turn(35, 235, 35, 90, 0, 700, 20000, 20000);
 }
 
 void pivotRight180(void) {
-	turn(33, 1352, 33, 90, 0, -130, 4000, 4000);
+	turn(35, 235, 35, 90, 0, -700, 20000, 20000);
 }
 
 void moveN(void) {
@@ -107,11 +105,11 @@ void moveW(void) {
 }
 
 void moveBack(void) {
-	bool hasFrontWall = (LFSensor > frontWallThreshold || RFSensor > frontWallThreshold)? 1: 0;
+	bool hasFrontWall = (LFSensor > frontWallThreshold && RFSensor > frontWallThreshold)? 1: 0;
 	bool hasLeftWall = (LDSensor > leftWallThreshold)? 1: 0;
 	bool hasRightWall = (RDSensor > rightWallThreshold)? 1: 0;
 	
-	moveForward(0.5, searchSpeed, stopSpeed);
+	moveForward(0.5, turnSpeed, stopSpeed);
 	if (hasFrontWall) {
 		align(alignTime);
 	}
@@ -128,7 +126,8 @@ void moveBack(void) {
 	else {
 		pivotLeft180();
 	}
-	moveForward(0.5, searchSpeed, searchSpeed);
+	
+	moveForward(0.5, turnSpeed, turnSpeed);
 }
 
 void detectWalls() {

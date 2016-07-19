@@ -44,7 +44,8 @@ extern float maxDecX;
 extern float maxAccW;
 extern float maxDecW;
 
-
+extern int sensorScale;
+	
 void updateSpeed(void);
 float getDecNeeded(int d, float Vi, float Vf);
 void setLeftPwm(int pwm);

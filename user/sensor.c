@@ -1,13 +1,13 @@
 #include "main.h"
 
 /* Sensor constants */
-int LDMidVal = 230; // 60-1800
-int RDMidVal = 230;	// 80-1600
-int LFMidVal = 650;
-int RFMidVal = 835;
+int LDMidVal = 380; // 60-1800
+int RDMidVal = 360;	// 80-1600
+int LFMidVal = 1000;
+int RFMidVal = 1050;
 int alignTime = 200;
 int alignPwm = 200;
-float alignScale = 1.5;
+float alignScale = 1;
 
 /* Sensor values updated every ms */
 int voltage = 0;
@@ -63,6 +63,8 @@ int getSensorError(void) {
 		sensorError = LDMidVal - LDSensor;
 	else if (RDSensor > RDMidVal)
 		sensorError = RDSensor - RDMidVal;
+	else if (LDSensor > leftWallThreshold - 100 && RDSensor > rightWallThreshold - 100)
+		sensorError = LDSensor - RDSensor;
 	
 	return sensorError;
 }

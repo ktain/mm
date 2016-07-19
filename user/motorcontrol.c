@@ -31,21 +31,21 @@ int posPwmW = 0;
 /* Speed settings */
 int maxPwm = 999;
 float stopSpeed = 0;
-float searchSpeed = 0.3;	// m/s
-float turnSpeed = 0.2;
-float traceSpeed = 0.7;
-float runSpeed = 0.4;
+float searchSpeed = 0.9;	// m/s
+float turnSpeed = 0.5;
+float traceSpeed = 0.9;
+float runSpeed = 2;
 
-float maxAccX = 3;	// m/s/s
-float maxDecX = 3;
+float maxAccX = 5;	// m/s/s
+float maxDecX = 5;
 float maxAccW = 4000;	// deg/s/s
 float maxDecW = 4000;
 
 /* Constant variables */
 float counts_per_mm = 141.1;
-float counts_per_deg = 54.45;	// higher == larger angle
+float counts_per_deg = 54;	// higher == larger angle
 int cellDistance = 25400;	// counts
-int sensorScale = 50;	// sensor error divisor
+int sensorScale = 70;	// sensor error divisor
 
 // Motor encoder PID
 float kpX = 2;
@@ -267,10 +267,11 @@ void moveForward(float cells, float maxSpeed, float endSpeed) {
 void turn(int t1, int t2, int t3, int radius, float speedX, float speedW, float accW, float decW) {
 	int tempAccW = accW;
 	int tempDecW = decW;
+	
+	moveForward(mm_to_counts(90 - radius)/cellDistance, speedX, speedX);
+	
 	maxAccW = accW;
 	maxDecW = decW;
-	
-	moveForward(mm_to_counts(90 - radius)/2/cellDistance, speedX, speedX);
 	
 	int curt = millis();
 	while ( (millis() - curt) <= (t1 + t2 + t3) ) {
@@ -280,10 +281,10 @@ void turn(int t1, int t2, int t3, int radius, float speedX, float speedW, float 
 			targetSpeedW = 0;
 	}
 	
-	moveForward(mm_to_counts(90 - radius)/2/cellDistance, speedX, speedX);
-	
 	maxAccW = tempAccW;
 	maxDecW = tempDecW;
+	
+	moveForward(mm_to_counts(90 - radius)/cellDistance, speedX, speedX);
 }
 
 void align(int duration){

@@ -33,10 +33,10 @@
 #define ALL_LED_OFF		LED1_OFF; LED2_OFF; LED3_OFF; LED4_OFF; LED5_OFF; LED6_OFF; LED7_OFF; LED8_OFF; LED9_OFF; LED10_OFF
 
 #define read_Voltage     	 (readADC(ADC1, 15, ADC_SampleTime_84Cycles)*12840/4096)
-#define read_LF_Sensor     readADC(ADC1, 10,  ADC_SampleTime_84Cycles)
-#define read_LD_Sensor     readADC(ADC1, 11, ADC_SampleTime_84Cycles)
-#define	read_RD_Sensor     readADC(ADC1, 12,  ADC_SampleTime_84Cycles)
-#define read_RF_Sensor     readADC(ADC1, 13, ADC_SampleTime_84Cycles)
+#define read_LF_Sensor     readADC(ADC1, 10,  ADC_SampleTime_480Cycles)
+#define read_LD_Sensor     readADC(ADC1, 11, ADC_SampleTime_480Cycles)
+#define	read_RD_Sensor     readADC(ADC1, 12,  ADC_SampleTime_480Cycles)
+#define read_RF_Sensor     readADC(ADC1, 13, ADC_SampleTime_480Cycles)
 #define	read_Outz	       	 readADC(ADC1, 4,  ADC_SampleTime_84Cycles)
 #define	read_Vref	         readADC(ADC1, 5,  ADC_SampleTime_84Cycles)
 

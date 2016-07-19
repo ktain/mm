@@ -35,7 +35,7 @@ void floodSearch(unsigned char targetX, unsigned char targetY) {
 		placeTrace(curPosX, curPosY);
 		simulateStraight(targetX, targetY);
 	}
-	moveForward(0.5, searchSpeed, stopSpeed);
+	moveForward(0.5, turnSpeed, stopSpeed);
 	if (orientation == NORTH)
 		orientation = SOUTH;
 	else if (orientation == EAST)

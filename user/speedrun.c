@@ -73,7 +73,6 @@ void simulatePath(unsigned char targetX, unsigned char targetY) {
 		length[i] = count;
 		nextDir[i] = getNextDirection();
 		count = 0;
-		printf("length[%d] = %d | nextDir[%d] = %d\n\r", i, length[i], i, nextDir[i]);
 	}
 	
 	// Restore original position and orientation
