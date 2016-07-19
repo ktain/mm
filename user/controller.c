@@ -1,24 +1,24 @@
 #include "main.h"
 
-int leftWallThreshold = 180;	// when mouse is at half a cell distance
-int rightWallThreshold = 180;
+int leftWallThreshold = 200;	// when mouse is at half a cell distance
+int rightWallThreshold = 200;
 int frontWallThreshold = 80;
 
 int approachThreshold = 50;
 
 
 void curveLeft90(void) {
-	turn(11, 203, 11, 70, 0.5, 430, 40000, 40000);
+	turn(13, 167, 13, 60, 0.5, 500, 40000, 40000);
 	//turn(9, 256, 9, 53, 0.3, 345, 40000, 40000);
 }
 
 void curveRight90(void) {
-	turn(11, 203, 11, 70, 0.5, -430, 40000, 40000);
+	turn(13, 167, 13, 60, 0.5, -500, 40000, 40000);
 	//turn(9, 250, 9, 54, 0.3, -350, 40000, 40000);
 }
 
 void pivotLeft90(void) {
-	turn(9, 248, 9, 90, 0, -350, 40000, 40000);
+	turn(9, 248, 9, 90, 0, 350, 40000, 40000);
 }
 
 void pivotRight90(void) {
@@ -34,11 +34,8 @@ void pivotRight180(void) {
 }
 
 void moveN(void) {
-	if (orientation == NORTH) {
-		if (approachingWall())
-			moveForward(1, searchSpeed, turnSpeed);
+	if (orientation == NORTH)
 		moveForward(1, searchSpeed, searchSpeed);
-	}
 	else if (orientation == EAST)
 		curveLeft90();
 	else if (orientation == SOUTH)
@@ -51,12 +48,8 @@ void moveN(void) {
 }
 
 void moveE(void) {
-	if (orientation == EAST) {
-		if (approachingWall())
-			moveForward(1, searchSpeed, turnSpeed);
-		else
-			moveForward(1, searchSpeed, searchSpeed);
-	}
+	if (orientation == EAST)
+		moveForward(1, searchSpeed, searchSpeed);
 	else if (orientation == SOUTH)
 		curveLeft90();
 	else if (orientation == WEST)
@@ -69,12 +62,8 @@ void moveE(void) {
 }
 
 void moveS(void) {
-	if (orientation == SOUTH) {
-		if (approachingWall())
-			moveForward(1, searchSpeed, turnSpeed);
-		else 
-			moveForward(1, searchSpeed, searchSpeed);
-	}
+	if (orientation == SOUTH)
+		moveForward(1, searchSpeed, searchSpeed);
 	else if (orientation == WEST)
 		curveLeft90();
 	else if (orientation == NORTH)
@@ -87,12 +76,8 @@ void moveS(void) {
 }
 
 void moveW(void) {	
-	if (orientation == WEST) {
-		if (approachingWall())
-			moveForward(1, searchSpeed, turnSpeed);
-		else
-			moveForward(1, searchSpeed, searchSpeed);
-	}
+	if (orientation == WEST)
+		moveForward(1, searchSpeed, searchSpeed);
 	else if (orientation == NORTH)
 		curveLeft90();
 	else if (orientation == EAST)

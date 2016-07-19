@@ -31,21 +31,21 @@ int posPwmW = 0;
 /* Speed settings */
 int maxPwm = 999;
 float stopSpeed = 0;
-float searchSpeed = 0.9;	// m/s
+float searchSpeed = 0.7;	// m/s
 float turnSpeed = 0.5;
-float traceSpeed = 0.9;
-float runSpeed = 2;
+float traceSpeed = 0.85;
+float runSpeed = 1.5;
 
-float maxAccX = 5;	// m/s/s
-float maxDecX = 5;
+float maxAccX = 6;	// m/s/s
+float maxDecX = 6;
 float maxAccW = 4000;	// deg/s/s
 float maxDecW = 4000;
 
 /* Constant variables */
-float counts_per_mm = 141.1;
+float counts_per_mm = 145.5;
 float counts_per_deg = 54;	// higher == larger angle
-int cellDistance = 25400;	// counts
-int sensorScale = 70;	// sensor error divisor
+int cellDistance = 26200;	// counts
+int sensorScale = 120;	// sensor error divisor
 
 // Motor encoder PID
 float kpX = 2;
@@ -249,7 +249,7 @@ void moveForward(float cells, float maxSpeed, float endSpeed) {
 		if (distanceLeft < cellDistance/2 && endSpeed == stopSpeed)
 			useIRSensors = 0;
 		if (getDecNeeded(distanceLeft, curSpeedX, mm_to_counts(endSpeed)) < mm_to_counts(maxDecX)/1000) {
-			targetSpeedX = mm_to_counts(maxSpeed);
+				targetSpeedX = mm_to_counts(maxSpeed);
 		}
 		else {
 			targetSpeedX = mm_to_counts(endSpeed);

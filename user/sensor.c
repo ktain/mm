@@ -1,12 +1,12 @@
 #include "main.h"
 
 /* Sensor constants */
-int LDMidVal = 380; // 60-1800
-int RDMidVal = 360;	// 80-1600
-int LFMidVal = 1000;
-int RFMidVal = 1050;
-int alignTime = 200;
-int alignPwm = 200;
+int LDMidVal = 400; // 60-1800
+int RDMidVal = 400;	// 80-1600
+int LFMidVal = 1140;
+int RFMidVal = 1240;
+int alignTime = 300;
+int alignPwm = 150;
 float alignScale = 1;
 
 /* Sensor values updated every ms */
@@ -40,7 +40,7 @@ void readIRSensors(void)
 		LFSensor = 0;
 	if(RFSensor < 0)
 		RFSensor = 0;
- 	delay_us(20);
+ 	delay_us(30);
 	
 	//Read diagonal sensors
 	DIAG_EM_ON;
@@ -52,7 +52,7 @@ void readIRSensors(void)
 		LDSensor = 0;
 	if(RDSensor < 0)
 		RDSensor = 0;
-	delay_us(20);
+	delay_us(30);
 }
 
 // Returns sensor error 
@@ -63,8 +63,6 @@ int getSensorError(void) {
 		sensorError = LDMidVal - LDSensor;
 	else if (RDSensor > RDMidVal)
 		sensorError = RDSensor - RDMidVal;
-	else if (LDSensor > leftWallThreshold - 100 && RDSensor > rightWallThreshold - 100)
-		sensorError = LDSensor - RDSensor;
 	
 	return sensorError;
 }

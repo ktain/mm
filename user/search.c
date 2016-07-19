@@ -16,11 +16,12 @@ void floodSearch(unsigned char targetX, unsigned char targetY) {
 	else if (orientation == WEST)
 		curPosX--;
 	
-	placeTrace(curPosX, curPosY);
-	
 	while( !atTarget(targetX, targetY) ) {
-		detectWalls();
-		updateDistances(targetX, targetY);
+		if (!hasTrace(curPosX, curPosY)) {
+			detectWalls();
+			placeTrace(curPosX, curPosY);
+			updateDistances(targetX, targetY);
+		}
 		
 		//Error check
 		if (distance[curPosX][curPosY] >= MAX_DIST) {
@@ -32,10 +33,13 @@ void floodSearch(unsigned char targetX, unsigned char targetY) {
 		}
 		
 		performNextMove();
-		placeTrace(curPosX, curPosY);
 		simulateStraight(targetX, targetY);
 	}
+	
 	moveForward(0.5, turnSpeed, stopSpeed);
+	delay_ms(200);
+	disableMotorControl();
+	
 	if (orientation == NORTH)
 		orientation = SOUTH;
 	else if (orientation == EAST)
@@ -45,8 +49,9 @@ void floodSearch(unsigned char targetX, unsigned char targetY) {
 	else if (orientation == WEST)
 		orientation = EAST;
 	
-	delay_ms(100);
-	disableMotorControl();
+	if (LFSensor > frontWallThreshold && RFSensor > frontWallThreshold)
+		align(alignTime);
+	
 	playVictory();
 	enableMotorControl();
 	pivotLeft180();

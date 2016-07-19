@@ -29,8 +29,10 @@ void speedRun(unsigned char targetX, unsigned char targetY){
 		else if (nextDir[i] == WEST)
 			moveW();
 	}
-	delay_ms(500);
+	
+	delay_ms(200);
 	disableMotorControl();
+	
 }
 
 
