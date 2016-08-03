@@ -4,6 +4,7 @@
 extern bool useMotorControl;
 extern bool useIRSensors;
 extern bool useOnlyGyroFeedback;
+extern bool useOnlyEncFeedback;
 
 extern int encCountLeft;
 extern int encCountRight;

@@ -209,6 +209,5 @@ void simulateStraight(unsigned char targetX, unsigned char targetY) {
 	moveForward(count, traceSpeed, searchSpeed);
 	curPosX = xPos;
 	curPosY = yPos;
-	
 }
 

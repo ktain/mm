@@ -3,6 +3,7 @@
 bool useMotorControl = 0;
 bool useIRSensors = 0;
 bool useOnlyGyroFeedback = 0;
+bool useOnlyEncFeedback = 0;
 
 int leftEncCount = 0;
 int rightEncCount = 0;
@@ -47,7 +48,7 @@ float maxDecW = 25000;
 float counts_per_mm = 145.5;
 float counts_per_deg = 55.8;	// higher == larger angle
 int cellDistance = 26200;	// counts
-int sensorScale = 120;	// sensor error divisor
+int sensorScale = 200;	// sensor error divisor
 float gyroScale = 3.7;
 
 // Motor encoder PID
@@ -147,8 +148,10 @@ void updateSpeed(void) {
 	
 	if (useOnlyGyroFeedback)
 		rotationalFeedback = gyroFeedback;
-	else 
+	else if (useOnlyEncFeedback)
 		rotationalFeedback = encFeedbackW;
+	else 
+		rotationalFeedback = gyroFeedback + encFeedbackW;
 	
 	if (useIRSensors)
 		rotationalFeedback -= getSensorError()/sensorScale;
