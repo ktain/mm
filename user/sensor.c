@@ -6,8 +6,8 @@ int RDMidVal = 400;	// 80-1600
 int LFMidVal = 1140;
 int RFMidVal = 1240;
 int alignTime = 400;
-int alignPwm = 150;
-float alignScale = 1.5;
+int alignPwm = 120;
+float alignScale = 1.8;
 
 /* Sensor values updated every ms */
 int voltage = 0;
@@ -64,7 +64,7 @@ int getSensorError(void) {
 		sensorError = LDMidVal - LDSensor;
 	else if (RDSensor > RDMidVal)
 		sensorError = RDSensor - RDMidVal;
-	else if (LFSensor > frontWallThreshold && RFSensor > frontWallThreshold)
+	else if (LFSensor > approachThreshold && RFSensor > approachThreshold)
 		sensorError = LFSensor - RFSensor;
 	
 	return sensorError;

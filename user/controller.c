@@ -1,28 +1,28 @@
 #include "main.h"
 
-int leftWallThreshold = 200;	// when mouse is at half a cell distance
-int rightWallThreshold = 200;
+int leftWallThreshold = 220;	// when mouse is at half a cell distance
+int rightWallThreshold = 220;
 int frontWallThreshold = 80;
 
 int approachThreshold = 50;
 
 
 void curveLeft90(void) {
+	//turn(26, 112, 26, 60, 0.6, 650, 25000, 25000);
 	turn(16, 209, 16, 60, 0.4, 400, 25000, 25000);
-	//turn(9, 256, 9, 53, 0.3, 345, 40000, 40000);
 }
 
 void curveRight90(void) {
+	//turn(26, 112, 26, 60, 0.6, -650, 25000, 25000);
 	turn(16, 209, 16, 60, 0.4, -400, 25000, 25000);
-	//turn(9, 250, 9, 54, 0.3, -350, 40000, 40000);
 }
 
 void pivotLeft90(void) {
-	turn(16, 209, 16, 90, 0, 400, 25000, 25000);
+	turn(16, 210, 16, 90, 0, 400, 25000, 25000);
 }
 
 void pivotRight90(void) {
-	turn(16, 209, 16, 90, 0, -400, 25000, 25000);
+	turn(16, 210, 16, 90, 0, -400, 25000, 25000);
 }
 
 void pivotLeft180(void) {

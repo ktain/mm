@@ -26,8 +26,21 @@ void button1(void) {
 	delay_ms(1000);
 
 	angle = 0;
-	speedRun(5,5);
-	speedRun(0,0);
+	
+	enableMotorControl();
+	moveForward(4.5, 1, 0.4);
+	turn(14, 320, 170, 90, 0.4, -400, 25000, 25000);
+	moveForward(7*1.414/2, 1, 0.4);
+	moveForward(.07, 1, 0.4);
+	turn(14, 320, 14, 90, 0.4, 400, 25000, 25000);
+	moveForward(3.5, 1, 0.4);
+	disableMotorControl();
+	delay_ms(300);
+	setLeftPwm(0);
+	setRightPwm(0);
+	
+	//speedRun(5,5);
+	//speedRun(0,0);
 	
 	/*
 	enableMotorControl();

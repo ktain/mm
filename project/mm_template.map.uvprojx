@@ -378,6 +378,11 @@
           <GroupName>user</GroupName>
           <Files>
             <File>
+              <FileName>motorcontrol.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\user\motorcontrol.h</FilePath>
+            </File>
+            <File>
               <FileName>button.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\user\button.c</FilePath>
@@ -431,11 +436,6 @@
               <FileName>motorcontrol.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\user\motorcontrol.c</FilePath>
-            </File>
-            <File>
-              <FileName>motorcontrol.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\user\motorcontrol.h</FilePath>
             </File>
             <File>
               <FileName>sensor.c</FileName>

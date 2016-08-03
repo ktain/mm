@@ -34,13 +34,13 @@ int posPwmW = 0;
 /* Speed settings */
 int maxPwm = 999;
 float stopSpeed = 0;
-float searchSpeed = 0.4;	// m/s
+float searchSpeed = 0.6;	// m/s
 float turnSpeed = 0.4;
-float traceSpeed = 0.8;
-float runSpeed = 1.5;
+float traceSpeed = 1.5;
+float runSpeed = 2.0;
 
-float maxAccX = 4;	// m/s/s
-float maxDecX = 4;
+float maxAccX = 5;	// m/s/s
+float maxDecX = 5;
 float maxAccW = 25000;	// deg/s/s
 float maxDecW = 25000;
 
@@ -48,7 +48,7 @@ float maxDecW = 25000;
 float counts_per_mm = 145.5;
 float counts_per_deg = 55.8;	// higher == larger angle
 int cellDistance = 26200;	// counts
-int sensorScale = 100;	// sensor error divisor
+int sensorScale = 200;	// sensor error divisor
 float gyroScale = 3.7;
 
 // Motor encoder PID

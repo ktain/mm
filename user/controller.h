@@ -23,6 +23,7 @@ bool approachingWall(void);
 extern int leftWallThreshold;
 extern int rightWallThreshold;
 extern int frontWallThreshold;
+extern int approachThreshold;
 
 
 #endif

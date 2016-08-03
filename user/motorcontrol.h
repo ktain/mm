@@ -66,6 +66,8 @@ float mm_to_counts(float speed);
 float counts_to_deg(float counts);
 float deg_to_counts(float deg);
 
+extern int cellDistance;
+
 #define LPWMA TIM4->CCR1
 #define LPWMB TIM4->CCR2
 #define RPWMA TIM4->CCR3
