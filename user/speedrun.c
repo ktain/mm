@@ -121,6 +121,11 @@ void simulatePath(unsigned char targetX, unsigned char targetY) {
 				count++;
 			}
 		}
+		//Error check
+		if (count == 0) {
+			playLost();
+			while(1);
+		}
 		length[i] = count;
 		nextDir[i] = getNextDirection();
 		count = 0;
