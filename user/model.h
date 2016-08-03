@@ -2,7 +2,7 @@
 #define MODEL_H
 
 #define SIZE 6      // size of maze
-#define MAX_DIST 252  // max distance for flood search
+#define MAX_DIST (SIZE*SIZE)  // max distance for flood search
 
 #define NORTH 1
 #define EAST 2

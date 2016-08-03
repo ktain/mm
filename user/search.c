@@ -29,6 +29,7 @@ void floodSearch(unsigned char targetX, unsigned char targetY) {
 			delay_ms(100);
 			disableMotorControl();
 			playLost();
+			while(1);
 			return;
 		}
 		
