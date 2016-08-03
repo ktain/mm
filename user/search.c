@@ -40,6 +40,8 @@ void floodSearch(unsigned char targetX, unsigned char targetY) {
 	delay_ms(200);
 	disableMotorControl();
 	
+	playVictory();
+	
 	if (orientation == NORTH)
 		orientation = SOUTH;
 	else if (orientation == EAST)
@@ -52,9 +54,16 @@ void floodSearch(unsigned char targetX, unsigned char targetY) {
 	if (LFSensor > frontWallThreshold && RFSensor > frontWallThreshold)
 		align(alignTime);
 	
-	playVictory();
 	enableMotorControl();
-	pivotLeft180();
+	pivotLeft90();
+	delay_ms(100);
+	disableMotorControl();
+	
+	if (LFSensor > frontWallThreshold && RFSensor > frontWallThreshold)
+		align(alignTime);
+	
+	enableMotorControl();
+	pivotLeft90();
 	delay_ms(100);
 	disableMotorControl();
 }

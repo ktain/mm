@@ -9,15 +9,37 @@ void speedRun(unsigned char targetX, unsigned char targetY){
 	
 	for (int i = 0; length[i] != 0; i++) {
 		// First straight
-		if (i == 0)
+		if (i == 0) {
 			moveForward(length[i] - 0.5, runSpeed, turnSpeed);
-		
+		}
 		// Last straight
-		else if (length[i+1] == 0)
+		else if (length[i+1] == 0) {
 			moveForward(length[i] - 0.5, runSpeed, stopSpeed);
-		
-		else
+			if (orientation == NORTH)
+				curPosY++;
+			else if (orientation == EAST)
+				curPosX++;
+			else if (orientation == SOUTH)
+				curPosY--;
+			else if (orientation == WEST)
+				curPosX--;
+		}
+		// Intermediate straight
+		else {
 			moveForward(length[i] - 1, runSpeed, turnSpeed);
+		}
+		
+		if (orientation == NORTH)
+			curPosY += length[i] - 1;
+		else if (orientation == EAST)
+			curPosX += length[i] - 1;
+		else if (orientation == SOUTH)
+			curPosY -= length[i] - 1;
+		else if (orientation == WEST)
+			curPosX -= length[i] - 1;
+		
+		if (length[i+1] == 0)
+			break;
 		
 		// Curve turn
 		if (nextDir[i] == NORTH)
@@ -33,21 +55,48 @@ void speedRun(unsigned char targetX, unsigned char targetY){
 	delay_ms(200);
 	disableMotorControl();
 	
+	if (orientation == NORTH)
+		orientation = SOUTH;
+	else if (orientation == EAST)
+		orientation = WEST;
+	else if (orientation == SOUTH)
+		orientation = NORTH;
+	else if (orientation == WEST)
+		orientation = EAST;
+	
+	if (LFSensor > frontWallThreshold && RFSensor > frontWallThreshold)
+		align(alignTime);
+	
+	enableMotorControl();
+	pivotLeft90();
+	delay_ms(100);
+	disableMotorControl();
+	
+	if (LFSensor > frontWallThreshold && RFSensor > frontWallThreshold)
+		align(alignTime);
+	
+	enableMotorControl();
+	pivotLeft90();
+	delay_ms(100);
+	disableMotorControl();
+	
 }
 
 
 void simulatePath(unsigned char targetX, unsigned char targetY) {
 	int count = 0;
 	
-	curPosX = 0;
-	curPosY = 0;
-	orientation = NORTH;
+	// Store current position and orientation
+	int tempPosX = curPosX;
+	int tempPosY = curPosY;
+	int tempOrientation = orientation;
 	
 	// Block off untraced routes
 	closeUntracedCells();
 	updateDistances(targetX, targetY);
 	
-	for (int i = 0; !atTarget(targetX, targetY); i++) {
+	int i;
+	for (i = 0; !atTarget(targetX, targetY); i++) {
 		if (orientation == NORTH) {
 			while (!hasNorthWall(curPosX, curPosY) && (distance[curPosX][curPosY+1] == distance[curPosX][curPosY] - 1) && hasTrace(curPosX, curPosY+1)) {
 				curPosY++;
@@ -77,10 +126,14 @@ void simulatePath(unsigned char targetX, unsigned char targetY) {
 		count = 0;
 	}
 	
+	// Encode stopping condition
+	length[i] = 0;
+	nextDir[i] = 0;
+	
 	// Restore original position and orientation
-	curPosX = 0;
-	curPosY = 0;
-	orientation = NORTH;
+	curPosX = tempPosX;
+	curPosY = tempPosY;
+	orientation = tempOrientation;
 }
 
 // Returns next direction to move in

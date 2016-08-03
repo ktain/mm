@@ -4,8 +4,8 @@ int beepDuration; // in ms
 
 // Non-blocking beep
 void beep(int duration, int freq) {
-	TIM3->CCR1 = (TIM3->ARR+1)/4;		// /8 == 12.5%, /4 == 25%, /2 == 50% loudness
-	TIM3->ARR = 84000000/(freq)/140-1;
+	beep_on;		// /8 == 12.5%, /4 == 25%, /2 == 50% loudness
+	TIM3->ARR = 84000000/139/(freq);
 	beepDuration = duration;
 }
 

@@ -77,7 +77,7 @@ void readGyro(void)
 		aSpeed += read_Outz;
 	
   aSpeed *= 50000/sampleNum;
-	aSpeed -= 96360000;	// Outz * 50000, if angle goes up, increase
+	aSpeed -= 96350000;	// Outz * 50000, if angle goes up, increase
 	aSpeed /= 50000;
 	aSpeed /= 4;
 	angle += aSpeed; 

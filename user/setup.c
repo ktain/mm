@@ -17,7 +17,8 @@ void setup() {
 	usart_setup(9600);
 	motor_setup();
 	encoder_setup();
-	buzzer_setup();
+	//buzzer_setup();
+	fan_setup();
 	sensor_setup();
 }
 
@@ -203,7 +204,7 @@ void buzzer_setup(void)
   GPIO_InitTypeDef GPIO_InitStructure;
   TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
   TIM_OCInitTypeDef  TIM_OCInitStructure;		
-  /* TIM8 clock enable */
+  /* TIM4 clock enable */
   RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
   
   /* GPIOC Configuration: TIM3 CH1 (PA6) */
@@ -251,6 +252,44 @@ void buzzer_setup(void)
 	TIM_Cmd(TIM3, ENABLE);	// enable TIM3
 }
 
+
+void fan_setup(void) {
+
+	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+	TIM_OCInitTypeDef TIM_OCInitStructure;
+	GPIO_InitTypeDef GPIO_InitStructure;
+	
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
+	
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+  GPIO_Init(GPIOB, &GPIO_InitStructure);
+	
+	GPIO_PinAFConfig(GPIOB, GPIO_PinSource1, GPIO_AF_TIM3);
+
+	TIM_TimeBaseStructure.TIM_Period = 149;
+	TIM_TimeBaseStructure.TIM_Prescaler = 139; // 84MHz/100/40 = 1kHz
+	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+
+	TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
+
+	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
+	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+	TIM_OCInitStructure.TIM_Pulse = 0;
+	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+
+	TIM_OC4Init(TIM3, &TIM_OCInitStructure);
+	TIM_OC4PreloadConfig(TIM3, TIM_OCPreload_Enable);
+
+
+	TIM_ARRPreloadConfig(TIM3, ENABLE);
+	TIM_Cmd(TIM3, ENABLE);
+}
 
 void encoder_setup(void)
 {
@@ -318,7 +357,7 @@ void motor_setup() {
 
 	/* Time base configuration */
 	TIM_TimeBaseStructure.TIM_Period = 999;
-	TIM_TimeBaseStructure.TIM_Prescaler = 1;	// 1 = 42kHz, 2 = 28kHz 3 = 21kHZ
+	TIM_TimeBaseStructure.TIM_Prescaler = 3;	// 1 = 42kHz, 2 = 28kHz 3 = 21kHZ
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 

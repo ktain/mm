@@ -3,6 +3,7 @@
 
 extern bool useMotorControl;
 extern bool useIRSensors;
+extern bool useOnlyGyroFeedback;
 
 extern int encCountLeft;
 extern int encCountRight;
@@ -22,6 +23,7 @@ extern float curSpeedX;
 extern float curSpeedW;
 extern float encFeedbackX;
 extern float encFeedbackW;
+extern float gyroFeedback;
 extern float errorX;
 extern float errorW;
 extern float oldErrorX;

@@ -2,6 +2,7 @@
 
 bool useMotorControl = 0;
 bool useIRSensors = 0;
+bool useOnlyGyroFeedback = 0;
 
 int leftEncCount = 0;
 int rightEncCount = 0;
@@ -21,6 +22,7 @@ float curSpeedX = 0;
 float curSpeedW = 0;
 float encFeedbackX = 0;
 float encFeedbackW = 0;
+float gyroFeedback = 0;
 float errorX = 0;
 float errorW = 0;
 float oldErrorX = 0;
@@ -31,27 +33,28 @@ int posPwmW = 0;
 /* Speed settings */
 int maxPwm = 999;
 float stopSpeed = 0;
-float searchSpeed = 0.7;	// m/s
-float turnSpeed = 0.5;
-float traceSpeed = 0.85;
+float searchSpeed = 0.4;	// m/s
+float turnSpeed = 0.4;
+float traceSpeed = 0.8;
 float runSpeed = 1.5;
 
-float maxAccX = 6;	// m/s/s
-float maxDecX = 6;
-float maxAccW = 4000;	// deg/s/s
-float maxDecW = 4000;
+float maxAccX = 4;	// m/s/s
+float maxDecX = 4;
+float maxAccW = 25000;	// deg/s/s
+float maxDecW = 25000;
 
 /* Constant variables */
 float counts_per_mm = 145.5;
-float counts_per_deg = 54;	// higher == larger angle
+float counts_per_deg = 55.8;	// higher == larger angle
 int cellDistance = 26200;	// counts
 int sensorScale = 120;	// sensor error divisor
+float gyroScale = 3.7;
 
 // Motor encoder PID
 float kpX = 2;
 float kdX = 4;
-float kpW = 2;
-float kdW = 12;
+float kpW = 1;
+float kdW = 20;
 
 
 void setLeftPwm(int pwm) {
@@ -135,18 +138,21 @@ void updateSpeed(void) {
 	}
 	
 	/* PD control */
-	float encFeedbackX;
-	float encFeedbackW;
+
 	float rotationalFeedback;
 	
 	encFeedbackX = (rightEncChange + leftEncChange)/2;
 	encFeedbackW = (rightEncChange - leftEncChange)/2;
+	gyroFeedback = -aSpeed/gyroScale;
 	
-	rotationalFeedback = encFeedbackW;
+	if (useOnlyGyroFeedback)
+		rotationalFeedback = gyroFeedback;
+	else 
+		rotationalFeedback = encFeedbackW;
 	
 	if (useIRSensors)
 		rotationalFeedback -= getSensorError()/sensorScale;
-	
+
 	errorX += curSpeedX - encFeedbackX;
 	errorW += curSpeedW - rotationalFeedback;
 	
@@ -223,6 +229,8 @@ void resetMotorParameters(void) {
 	curSpeedW = 0;
 	encFeedbackX = 0;
 	encFeedbackW = 0;
+	gyroFeedback = 0;
+	angle = 0;
 	errorX = 0;
 	errorW = 0;
 	oldErrorX = 0;
@@ -242,6 +250,7 @@ void resetMotorParameters(void) {
  *	Straight movement
  */
 void moveForward(float cells, float maxSpeed, float endSpeed) {
+	angle = 0;
 	
 	distanceLeft = cells*cellDistance;
 	useIRSensors = 1;
@@ -265,24 +274,48 @@ void moveForward(float cells, float maxSpeed, float endSpeed) {
  *	time is in ms, speedX is in m/s, speedW is in deg/s
  */
 void turn(int t1, int t2, int t3, int radius, float speedX, float speedW, float accW, float decW) {
-	int tempAccW = accW;
-	int tempDecW = decW;
-	
+	float tempAccW = accW;
+	float tempDecW = decW;
+	float tempkpW = kpW;
+	float tempkdW = kdW;
+
 	moveForward(mm_to_counts(90 - radius)/cellDistance, speedX, speedX);
 	
 	maxAccW = accW;
 	maxDecW = decW;
 	
+	useOnlyGyroFeedback = 1;
+	angle = 0;
 	int curt = millis();
 	while ( (millis() - curt) <= (t1 + t2 + t3) ) {
-		if ( (millis() - curt) <= (t1 + t2) )
+		if ( (millis() - curt) <= t1 ) {
+			kpW = 0.7;
+			kdW = 10;
 			targetSpeedW = deg_to_counts(speedW)/1000;
-		else
+		}
+		else if ( (millis() - curt) <= (t1 + t2) ) {
+			kpW = 0.7;
+			kdW = 10;
+			targetSpeedW = deg_to_counts(speedW)/1000;
+		}
+		else {
+			kpW = 0.7;
+			kdW = 10;
 			targetSpeedW = 0;
+		}
 	}
 	
+	// Crash detection
+	if (speedW < 0 && angle < 3000)
+		disableMotorControl();
+	else if (speedW > 0 && angle > -3000)
+		disableMotorControl();
+		
+	useOnlyGyroFeedback = 0;
 	maxAccW = tempAccW;
 	maxDecW = tempDecW;
+	kpW = tempkpW;
+	kdW = tempkdW;
 	
 	moveForward(mm_to_counts(90 - radius)/cellDistance, speedX, speedX);
 }

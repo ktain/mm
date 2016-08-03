@@ -11,10 +11,9 @@ void button0(void) {
 	curPosY = 0;
 	orientation = NORTH;
 	
-	while(1) {
 		floodSearch(5, 5);
 		floodSearch(0, 0);
-	}
+	
 	//printMaze();
 	
 	setLeftPwm(0);
@@ -24,17 +23,19 @@ void button0(void) {
 
 void button1(void) {
 	beepn(1);
-	delay_ms(500);
+	delay_ms(1000);
 
-	//maxAccX = 1000;
-	//maxDecX = 1000;
+	angle = 0;
+	speedRun(5,5);
+	speedRun(0,0);
+	
+	/*
 	enableMotorControl();
-	curveLeft90();
-	targetSpeedX = 0;
-	delay_ms(500);
+	while (1){
+		moveForward(1, 0.4, 0.4);
+		curveLeft90();
+	}
 	disableMotorControl();
-	
-	setLeftPwm(0);
-	setRightPwm(0);
-	
+	*/
+
 }
