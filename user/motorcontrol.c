@@ -48,7 +48,7 @@ float maxDecW = 25000;
 float counts_per_mm = 145.5;
 float counts_per_deg = 55.8;	// higher == larger angle
 int cellDistance = 26200;	// counts
-int sensorScale = 200;	// sensor error divisor
+int sensorScale = 100;	// sensor error divisor
 float gyroScale = 3.7;
 
 // Motor encoder PID

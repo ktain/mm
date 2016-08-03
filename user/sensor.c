@@ -5,9 +5,9 @@ int LDMidVal = 400; // 60-1800
 int RDMidVal = 400;	// 80-1600
 int LFMidVal = 1140;
 int RFMidVal = 1240;
-int alignTime = 300;
+int alignTime = 400;
 int alignPwm = 150;
-float alignScale = 1;
+float alignScale = 1.5;
 
 /* Sensor values updated every ms */
 int voltage = 0;
@@ -59,10 +59,13 @@ void readIRSensors(void)
 int getSensorError(void) {
 	int sensorError = 0;
 
+	// Positive sensor error turns to the left
 	if (LDSensor > LDMidVal)
 		sensorError = LDMidVal - LDSensor;
 	else if (RDSensor > RDMidVal)
 		sensorError = RDSensor - RDMidVal;
+	else if (LFSensor > frontWallThreshold && RFSensor > frontWallThreshold)
+		sensorError = LFSensor - RFSensor;
 	
 	return sensorError;
 }
