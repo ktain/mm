@@ -17,6 +17,7 @@ void floodSearch(unsigned char targetX, unsigned char targetY) {
 		curPosX--;
 	
 	while( !atTarget(targetX, targetY) ) {
+		simulateStraight(targetX, targetY);
 		if (!hasTrace(curPosX, curPosY)) {
 			detectWalls();
 			placeTrace(curPosX, curPosY);
